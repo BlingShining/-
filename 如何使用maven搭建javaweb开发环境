@@ -12,7 +12,23 @@
 4、若想要下载速度更快，可修改settings.xml文件中的镜像内容（即<mirror>...</mirror>中的内容为阿里云镜像）
 5、在cmd中输入mvn help:system,将中央仓库中的文件下载到本地仓库中，命令行中会出现Build Success提示。执行完这一步，本地D:\maven-repository文件夹中将会出现一部分新的文件。
 三、在eclipse中使用maven
-1、基本配置
+1、在eclipse中配置maven环境
 Window—>Preferences—>Maven
 （1）Installations：Add External Maven， 路径home选择maven的下载地址（D:\apache-maven-3.8.1），名字采用默认名字即可
-（2）User settings:选择D:\maven-repository\settings.xml,注意此时的LocalRepository文件夹已自动修改为D:\maven-repository本地仓库，而非默认仓库文件夹
+（2）User settings:选择D:\maven-repository\settings.xml,注意此时的LocalRepository文件夹已自动修改为D:\maven-repository本地仓库，而非默认仓库文件夹C:\Users\.m2文件夹
+2、新建maven项目
+（1）File -> new -> maven project,选择使用默认工作空间或修改工作空间
+（2）Archetype原型选择maven-archetype-webapp
+（3）填写group id和artifact id，其中group id是'公司性质.公司名'的形式,如com.baidu或org.apache，artifact id一般为项目名，如blingShining.onlineTest
+（4）项目创建完成后，可能会出现 The superclass "javax.servlet.http.HttpServlet" was not found on the Java Build Path 的错误。
+解决方法：右键项目-Properties-Java Build Path-Libraries
+（1）Add Library-Server Runtime
+（2）JRE System Libraries - Edit - workspace default JRE，选择当前工作环境的JDK
+3、配置服务器
+（1）window-show view -servers可以在eclipse中显示server页面
+（2）双击页面中某个服务器，可以出现详细信息，在overview页面中，可以配置此服务器的运行环境（如本机安装的Tomcat8.5），和访问端口；
+在module页面中可以配置访问的根路径。
+（3）右键服务器名，可以点击Add and Remove将项目部署到此服务器，或者把此服务器上的项目取消部署，以提高服务器对某个项目的响应速度。
+
+
+
