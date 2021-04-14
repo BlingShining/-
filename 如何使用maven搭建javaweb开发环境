@@ -1,0 +1,14 @@
+一、maven的安装
+1、官网下载maven
+官网地址http://maven.apache.org/download.cgi，选择link下的二进制压缩包进行下载。
+2、新建系统变量MAVEN_HOME，设置值为所下载压缩包的解压路径，如D:\apache-maven-3.8.1
+3、在系统变量的Path中添加%MAVEN_HOME%\bin\
+4、在cmd中输入mvn -v，查看maven是否安装成功
+二、maven的配置
+1、本地新建mavenrepository文件夹，作为本地仓库，如D:\maven-repository
+2、将maven安装路径下的conf文件夹中（按上述所言，即D:\apache-maven-3.8.1\conf）的settings.xml文件复制到本地仓库文件夹下（按上述所言，即D:\maven-repository）
+3、修改本地仓库文件夹（D:\maven-repository）下的settings.xml文件。
+将<localrepository></localrepository>的内容改为本地仓库文件夹的路径（按上述所言，即<localrepository>D:\maven-repository</localrepository>）
+4、若想要下载速度更快，可修改settings.xml文件中的镜像内容（即<mirror>...</mirror>中的内容为阿里云镜像）
+5、在cmd中输入mvn help:system,将中央仓库中的文件下载到本地仓库中。执行完这一步，本地D:\maven-repository文件夹中将会出现一部分新的文件。
+三、在eclipse中使用maven
