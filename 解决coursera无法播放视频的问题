@@ -1,0 +1,56 @@
+背景：coursera可以登录但不可以播放其中的视频
+coursera网址：www.coursera.org
+
+
+
+解决办法：
+1、用记事本打开系统中的hosts文件
+mac系统 => /private/etc/hosts
+Linux系统 => /etc/hosts
+windows系统 => C:\Windows\System32\drivers\etc\hosts
+
+2、通过解析机器查询自己机器对应的地址（这一步要在关闭手动代理的情况下才能打开下面的解析机器地址....具体原因暂时还不清楚）
+（1）如何关闭手动代理？
+以谷歌浏览器为例
+设置--->高级--->系统--->打开您计算机的代理设置--->将“手动设置代理”下的"使用代理服务器”关闭
+
+（2）解析机器地址：https://ping.eu/nslookup/
+在Ip address or host name框中中输入d3c33hcgiwev3.cloudfront.net
+以我的计算机为例，下面会出现类似这样的结果，后面的地址不同的计算机可能不一样
+（网络上很多教程只是给出了自己计算机对应的地址，直接使用别人计算机的地址后面的操作可能会失败）
+d3c33hcgiwev3.cloudfront.net has address 54.192.97.139
+d3c33hcgiwev3.cloudfront.net has address 54.192.97.74
+d3c33hcgiwev3.cloudfront.net has address 54.192.97.33
+d3c33hcgiwev3.cloudfront.net has address 54.192.97.79
+
+3、在hosts文件最后加入并保存（这一步在hosts文件中加入的地址应该是上一步你查询到的自己的计算机对应的地址）
+54.192.97.79 d3c33hcgiwev3.cloudfront.net
+54.192.97.74 d3c33hcgiwev3.cloudfront.net
+54.192.97.33 d3c33hcgiwev3.cloudfront.net
+54.192.97.139 d3c33hcgiwev3.cloudfront.net
+
+4、刷新DNS缓存，刷新coursera页面即可
+win+R--->输入cmd--->回车--->输入命令ipconfig/flushdns--->回车
+显示“已成功刷新DNS解析缓存”即可
+刷新coursera界面，即可正常观看coursera中的视频
+
+
+
+原因：coursera播放视频会去d3c33hcgiwev3.cloudfront.net请求资源，coursera没有被墙（所以coursera可以登录），
+但是支持视频的网址d3c33hcgiwev3.cloudfront.net被墙（所以视频无法播放）。
+网络的DNS进行域名解析，将域名转换为对应的ip地址（这样我们就可以不用记忆ip地址，只需要记忆比较好记的域名）
+在GFW（墙）的几种封锁方式中，有一种就是DNS污染，GFW会对域名解析的过程进行干扰，使得某些被干扰的域名返回一个错误的ip地址，这样主机就无法连接来获取资源。
+hosts相当于一个本地的域名解析，在域名解析的过程中，系统会先在本地的hosts文件查找对应的域名解析，如果没找到才会去DNS上找。
+所以这里的解决思路就是先在本地的hosts文件中写好Coursera中支持视频的网址d3c33hcgiwev3.cloudfront.net的对应域名解析，
+这样在计算机想要播放coursera中的视频时，就会通过本地的hosts文件进行相应的域名解析，这样就可以绕过GFW的DNS污染，也就避免了GFW对域名解析的干扰。
+
+
+
+可能出现的问题：使用google浏览器的谷歌搜索引擎无法访问某些网站，如github（刷新DNS解析缓存之前可以）
+可能是刷新DNS解析缓存之后，导致之前已有的一些缓存丢失，造成网站无法访问的问题。
+解决办法：在谷歌浏览器中改换使用百度搜索引擎访问github网址
+或者在谷歌浏览器的谷歌搜索引擎中访问baidu.com，然后在百度的搜索网页中访问Github
+
+
+疑问：既然使用域名可能会因为被DNS污染而被墙，为什么不可以直接使用IP地址呢？
+因为某些网页只能在特定条件下访问(如用户已登录、比如权限限制）而不可以直接通过网址/ip地址访问?
